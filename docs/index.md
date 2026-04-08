@@ -6,9 +6,15 @@ Use these files as the main reference:
 
 - [API Reference](./api-reference.md): constructor options, methods, events, payloads, and input shapes
 - [Behavior Reference](./behavior-reference.md): rendering rules, hover semantics, responsiveness, hit-testing, tooltips, camera behavior, and projections
-- [Demo Builder](./demo-builder.md): builder controls, runtime mapping, and generated-code expectations
+- [Recipes](./recipes.md): copy-pasteable starting points for common integration patterns
 
 For a quick entry point and starter example, see the project [README](../README.md).
+
+## Start Here
+
+- Humans new to the library: read the project [README](../README.md), then [Recipes](./recipes.md)
+- Humans wiring advanced behavior: jump from [Recipes](./recipes.md) to the [API Reference](./api-reference.md)
+- AI agents generating code: prefer [Recipes](./recipes.md) for canonical patterns, then use the [API Reference](./api-reference.md) to fill in exact option names and input shapes
 
 ## Intended Audience
 

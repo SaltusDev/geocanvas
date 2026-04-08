@@ -14,15 +14,64 @@ Bundler/npm import:
 
 ```js
 import { GeoCanvas } from '@saltusdev/geocanvas';
-
-const map = document.getElementById('map');
-const geo = new GeoCanvas(map);
 ```
+
+## Quickstart
+
+```js
+import { GeoCanvas } from '@saltusdev/geocanvas';
+
+const container = document.getElementById('map');
+
+const geojson = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      id: 'pt',
+      properties: { name: 'Portugal' },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [[
+          [-9.6, 36.8],
+          [-6.2, 36.8],
+          [-6.2, 42.2],
+          [-9.6, 42.2],
+          [-9.6, 36.8]
+        ]]
+      }
+    }
+  ]
+};
+
+const geo = new GeoCanvas(container, {
+  projection: 'mercator',
+  padding: 24,
+  tooltip: {
+    enabled: true,
+    template: '<strong>{name}</strong>'
+  }
+});
+
+geo.setGeoJSON(geojson, { fit: true });
+
+geo.on('featureclick', (payload) => {
+  console.log('Clicked feature:', payload.properties?.name);
+});
+```
+
+Expected HTML:
+
+```html
+<div id="map" style="width: 100%; height: 480px;"></div>
+```
+
+For multi-layer maps, reusable sources, joined region data, custom markers, and drilldown interactions, start with the recipes in [`docs/recipes.md`](./docs/recipes.md).
 
 ## Package Exports
 
-- `@saltusdev/geocanvas`: primary ESM entry
-- `@saltusdev/geocanvas/dist/geocanvas.min.js`: prebuilt minified ESM bundle
+- `@saltusdev/geocanvas`: primary published entry
+- `@saltusdev/geocanvas/dist/geocanvas.min.js`: explicit prebuilt minified subpath
 
 ## Workspace Development
 
@@ -35,8 +84,10 @@ Inside this repository:
 
 Canonical documentation lives under `docs/`:
 
+- `docs/index.md`
 - `docs/api-reference.md`
 - `docs/behavior-reference.md`
+- `docs/recipes.md`
 
 ## License
 

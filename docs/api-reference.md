@@ -14,17 +14,17 @@ Published prebuilt minified bundle subpath:
 import { GeoCanvas } from '@saltusdev/geocanvas/dist/geocanvas.min.js';
 ```
 
-Workspace development/source import:
-
-```js
-import { GeoCanvas } from './src/geocanvas.js';
-```
-
 Notes:
 
 - Published package consumers should prefer `@saltusdev/geocanvas`.
 - Use `@saltusdev/geocanvas/dist/geocanvas.min.js` when you specifically want the prebuilt minified bundle through the package surface.
-- Run `npm run build` to generate `dist/geocanvas.min.js`.
+- `src/` is repository source, not a published package entrypoint.
+- Run `npm run build` to generate `dist/geocanvas.min.js` inside the repository workspace.
+
+Quick navigation:
+
+- For a first working map, start with [`README.md`](../README.md).
+- For canonical integration patterns, use [`recipes.md`](./recipes.md).
 
 ## Constructor
 

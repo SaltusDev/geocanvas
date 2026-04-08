@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "description": "Dependency-free GeoJSON renderer for HTML canvas with interactive polygons, markers, lines, tooltips, legends, and flat or globe projections.",
   "type": "module",
-  "main": "./src/index.js",
+  "main": "./dist/geocanvas.min.js",
   "exports": {
-    ".": "./src/index.js",
+    ".": "./dist/geocanvas.min.js",
     "./dist/geocanvas.min.js": "./dist/geocanvas.min.js",
     "./package.json": "./package.json"
   },
   "files": [
-    "src",
     "dist",
     "README.md",
     "LICENSE"
@@ -37,7 +36,8 @@
   ],
   "scripts": {
     "build": "node scripts/build-geocanvas.js",
-    "test": "node --test"
+    "test": "node --test",
+    "prepublishOnly": "npm test && npm run build"
   },
   "devDependencies": {
     "terser": "^5.46.1"
