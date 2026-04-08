@@ -89,6 +89,12 @@ Canonical documentation lives under `docs/`:
 - `docs/behavior-reference.md`
 - `docs/recipes.md`
 
+## AI Skill
+
+This repository includes a repo-local Codex skill at [`/.codex/skills/geocanvas/SKILL.md`](./.codex/skills/geocanvas/SKILL.md).
+
+Use it when an AI agent is generating GeoCanvas integrations, examples, docs, or feature work and should follow the library's preferred API patterns, import paths, and validation flow.
+
 ## License
 
 MIT
