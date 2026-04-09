@@ -75,6 +75,7 @@ Type:
   animationDuration?: number,
   hoverTransitionDuration?: number,
   hoverTrail?: boolean,
+  hoverRegionToFront?: boolean,
   zoomStep?: number,
   restoreLayerVisibilityOnHome?: boolean,
   includePolygonIds?: string[] | string | Set<string>,
@@ -197,7 +198,7 @@ Type: `ViewOptions`
 Notes:
 
 - Groups camera, control, and gesture options under one object.
-- Supports `projection`, `initialZoom`, `initialCenter`, `minZoom`, `maxZoom`, `controls`, `gestures`, `animationDuration`, `hoverTransitionDuration`, `hoverTrail`, `zoomStep`, and `restoreLayerVisibilityOnHome`.
+- Supports `projection`, `initialZoom`, `initialCenter`, `minZoom`, `maxZoom`, `controls`, `gestures`, `animationDuration`, `hoverTransitionDuration`, `hoverTrail`, `hoverRegionToFront`, `zoomStep`, and `restoreLayerVisibilityOnHome`.
 - Flat constructor options with the same meaning remain supported as legacy aliases.
 
 ### `defaults`
@@ -378,6 +379,19 @@ Notes:
 - When `true`, hover colors can trail across multiple recently hovered polygons, lines, points, and markers while each target eases back to its base style independently.
 - When `false`, entering a new hover target clears those trailing color fades immediately, while hover-out to empty space can still animate from the current interpolated state.
 - Tooltip triggering and tooltip persistence are unchanged. This option only affects hover-style color and style interpolation.
+
+### `hoverRegionToFront`
+
+Type: `boolean`
+
+Default: `false`
+
+Notes:
+
+- When `true`, the hovered polygon region is rendered after the rest of the polygon pass so its hover border stays visible above neighboring region borders.
+- Multipart hovered regions keep their internal source order and move together as one hover group.
+- The option only changes polygon draw order while a polygon region is hovered.
+- Hit-testing, tooltip grouping, feature data, lines, points, and markers are unchanged.
 
 ### `zoomStep`
 
@@ -995,7 +1009,7 @@ Returns: `GeoCanvas`
 Notes:
 
 - Canonical runtime setter for grouped `view` options.
-- Supports `projection`, `initialZoom`, `initialCenter`, `minZoom`, `maxZoom`, `controls`, `gestures`, `animationDuration`, `hoverTransitionDuration`, `hoverTrail`, `zoomStep`, and `restoreLayerVisibilityOnHome`.
+- Supports `projection`, `initialZoom`, `initialCenter`, `minZoom`, `maxZoom`, `controls`, `gestures`, `animationDuration`, `hoverTransitionDuration`, `hoverTrail`, `hoverRegionToFront`, `zoomStep`, and `restoreLayerVisibilityOnHome`.
 - If `projection` changes, the map is reprojected. Use `options.resetView` to control whether the current view resets during reprojection.
 
 ### `setMarkerLabelOptions(markerLabels = {})`
@@ -1258,6 +1272,7 @@ Returns:
   animationDuration: number,
   hoverTransitionDuration: number,
   hoverTrail: boolean,
+  hoverRegionToFront: boolean,
   zoomStep: number,
   restoreLayerVisibilityOnHome: boolean
 }
@@ -1526,6 +1541,7 @@ Notes:
   animationDuration?: number,
   hoverTransitionDuration?: number,
   hoverTrail?: boolean,
+  hoverRegionToFront?: boolean,
   zoomStep?: number,
   restoreLayerVisibilityOnHome?: boolean
 }

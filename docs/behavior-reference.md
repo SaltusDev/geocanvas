@@ -396,7 +396,9 @@ Notes:
 - `hoverTransitionDuration: 0` disables the transition and keeps the previous immediate behavior
 - `hoverTrail: true` lets previously hovered targets keep easing their hover colors back out even after the pointer has already entered a different target
 - `hoverTrail: false` clears those overlapping hover-color trails when a new target is entered, but hover-out to empty space still animates from the current interpolated state
+- `hoverRegionToFront: true` redraws the currently hovered polygon region after the rest of the polygon pass so its hover border is not hidden under neighboring region borders
 - hover-trail behavior only affects hover style interpolation and does not change tooltip trigger, tooltip persistence, or tooltip grouping behavior
+- hover-region-to-front behavior changes polygon draw order only while a polygon region is hovered; it does not change hit-testing, tooltip grouping, or line/marker order
 
 ### Click
 

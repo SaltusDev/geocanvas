@@ -1635,6 +1635,7 @@ test('getViewOptions returns the canonical grouped view config', () => {
       animationDuration: 640,
       hoverTransitionDuration: 180,
       hoverTrail: false,
+      hoverRegionToFront: true,
       zoomStep: 1.3,
       restoreLayerVisibilityOnHome: true
     }
@@ -1660,6 +1661,7 @@ test('getViewOptions returns the canonical grouped view config', () => {
     animationDuration: 640,
     hoverTransitionDuration: 180,
     hoverTrail: false,
+    hoverRegionToFront: true,
     zoomStep: 1.3,
     restoreLayerVisibilityOnHome: true
   });
@@ -1688,6 +1690,7 @@ test('setViewOptions updates canonical view config and refreshes when projection
       animationDuration: 500,
       hoverTransitionDuration: 140,
       hoverTrail: true,
+      hoverRegionToFront: false,
       zoomStep: 1.2,
       restoreLayerVisibilityOnHome: false
     },
@@ -1721,7 +1724,8 @@ test('setViewOptions updates canonical view config and refreshes when projection
     controls: { enabled: true, position: 'bottom-left', homeIconSvg: '<svg viewBox="0 0 24 24"></svg>' },
     gestures: { scrollWheelZoomEnabled: true },
     animationDuration: 700,
-    hoverTrail: false
+    hoverTrail: false,
+    hoverRegionToFront: true
   }, { resetView: false });
 
   assert.equal(result, instance);
@@ -1732,12 +1736,44 @@ test('setViewOptions updates canonical view config and refreshes when projection
   assert.equal(instance.options.scrollWheelZoomEnabled, true);
   assert.equal(instance.options.animationDuration, 700);
   assert.equal(instance.options.hoverTrail, false);
+  assert.equal(instance.options.hoverRegionToFront, true);
   assert.equal(updatedControls, 1);
   assert.equal(appliedPan, 1);
   assert.deepEqual(refreshed, { resetView: false });
   assert.equal(instance.hoverTarget, null);
   assert.equal(hidTooltip, 1);
   assert.equal(rendered, 1);
+});
+
+test('getOrderedProjectedPolygons keeps source order unless hoverRegionToFront is enabled', () => {
+  const polygons = [
+    { id: 'a', hoverKey: 'feature:a:polygon:Polygon' },
+    { id: 'b', hoverKey: 'feature:b:polygon:Polygon' },
+    { id: 'c', hoverKey: 'feature:c:polygon:Polygon' }
+  ];
+
+  const unchanged = GeoCanvas.prototype.getOrderedProjectedPolygons.call({
+    options: { hoverRegionToFront: false },
+    hoverTarget: polygons[1]
+  }, polygons);
+
+  assert.deepEqual(unchanged.map((entry) => entry.id), ['a', 'b', 'c']);
+});
+
+test('getOrderedProjectedPolygons draws the hovered region last when hoverRegionToFront is enabled', () => {
+  const polygons = [
+    { id: 'a', hoverKey: 'feature:a:polygon:Polygon' },
+    { id: 'b-1', hoverKey: 'feature:b:polygon:Polygon' },
+    { id: 'c', hoverKey: 'feature:c:polygon:Polygon' },
+    { id: 'b-2', hoverKey: 'feature:b:polygon:Polygon' }
+  ];
+
+  const ordered = GeoCanvas.prototype.getOrderedProjectedPolygons.call({
+    options: { hoverRegionToFront: true },
+    hoverTarget: { hoverKey: 'feature:b:polygon:Polygon' }
+  }, polygons);
+
+  assert.deepEqual(ordered.map((entry) => entry.id), ['a', 'c', 'b-1', 'b-2']);
 });
 
 test('resetView closes built-in click UI before restoring home state and animating', () => {

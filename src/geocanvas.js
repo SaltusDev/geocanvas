@@ -5188,6 +5188,7 @@ export class GeoCanvas {
         Number((hasOwn(options, 'hoverTransitionDuration') ? options.hoverTransitionDuration : viewOptions.hoverTransitionDuration) ?? DEFAULT_HOVER_TRANSITION_DURATION)
       ),
       hoverTrail: ((hasOwn(options, 'hoverTrail') ? options.hoverTrail : viewOptions.hoverTrail) ?? DEFAULT_HOVER_TRAIL) !== false,
+      hoverRegionToFront: ((hasOwn(options, 'hoverRegionToFront') ? options.hoverRegionToFront : viewOptions.hoverRegionToFront) ?? false) === true,
       zoomStep: Number((hasOwn(options, 'zoomStep') ? options.zoomStep : viewOptions.zoomStep) ?? DEFAULT_ZOOM_STEP),
       restoreLayerVisibilityOnHome: Boolean(
         (hasOwn(options, 'restoreLayerVisibilityOnHome') ? options.restoreLayerVisibilityOnHome : viewOptions.restoreLayerVisibilityOnHome)
@@ -5591,6 +5592,7 @@ export class GeoCanvas {
       animationDuration: this.options.animationDuration,
       hoverTransitionDuration: this.options.hoverTransitionDuration,
       hoverTrail: this.options.hoverTrail,
+      hoverRegionToFront: this.options.hoverRegionToFront,
       zoomStep: this.options.zoomStep,
       restoreLayerVisibilityOnHome: this.options.restoreLayerVisibilityOnHome
     };
@@ -6653,6 +6655,9 @@ export class GeoCanvas {
         });
         this.render();
       }
+    }
+    if (Object.prototype.hasOwnProperty.call(view, 'hoverRegionToFront')) {
+      this.options.hoverRegionToFront = view.hoverRegionToFront === true;
     }
     if (Object.prototype.hasOwnProperty.call(view, 'zoomStep')) {
       this.options.zoomStep = Number(view.zoomStep ?? DEFAULT_ZOOM_STEP);
@@ -8118,7 +8123,7 @@ export class GeoCanvas {
     const featureLines = this.projectedFeatureEntries.filter((entry) => entry.kind === 'line');
     const points = this.projectedFeatureEntries.filter((entry) => entry.kind === 'point');
 
-    polygons.forEach((entry) => this.drawProjectedPolygon(entry));
+    this.getOrderedProjectedPolygons(polygons).forEach((entry) => this.drawProjectedPolygon(entry));
     featureLines.forEach((entry) => this.drawProjectedLine(entry));
     this.drawLayerLabels();
     this.visibleLayerLines.forEach((line) => this.drawCustomLine(line));
@@ -8530,6 +8535,31 @@ export class GeoCanvas {
 
   isHovered(target) {
     return getHoverIdentity(this.hoverTarget) === getHoverIdentity(target);
+  }
+
+  getOrderedProjectedPolygons(polygons = []) {
+    if (this.options.hoverRegionToFront !== true) {
+      return polygons;
+    }
+    const hoveredKey = getHoverIdentity(this.hoverTarget);
+    if (!hoveredKey) {
+      return polygons;
+    }
+
+    const hovered = [];
+    const remaining = [];
+    polygons.forEach((entry) => {
+      if (getHoverIdentity(entry) === hoveredKey) {
+        hovered.push(entry);
+      } else {
+        remaining.push(entry);
+      }
+    });
+
+    if (!hovered.length) {
+      return polygons;
+    }
+    return remaining.concat(hovered);
   }
 
   drawProjectedPolygon(entry) {
