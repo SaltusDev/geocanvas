@@ -63,7 +63,7 @@ Type:
   initialZoom?: number,
   initialCenter?: { lon: number, lat: number } | null,
   showControls?: boolean,
-  controlsPosition?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left',
+  controlsPosition?: 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center',
   homeIconSvg?: string | null,
   minZoom?: number,
   maxZoom?: number,
@@ -246,13 +246,14 @@ Notes:
 
 ### `controlsPosition`
 
-Type: `'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'`
+Type: `'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center'`
 
 Default: `'top-right'`
 
 Notes:
 
 - Controls render inside the map container.
+- `top-center` and `bottom-center` render the controls in a centered horizontal row.
 
 ### `homeIconSvg`
 
@@ -1260,7 +1261,7 @@ Returns:
   maxZoom: number,
   controls: {
     enabled: boolean,
-    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left',
+    position: 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center',
     homeIconSvg: string | null
   },
   gestures: {
@@ -1529,7 +1530,7 @@ Notes:
   maxZoom?: number,
   controls?: {
     enabled?: boolean,
-    position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left',
+    position?: 'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center',
     homeIconSvg?: string | null
   },
   gestures?: {

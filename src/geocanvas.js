@@ -3839,7 +3839,7 @@ function computeScreenMidpoint(a, b) {
 }
 
 function normalizeControlsPosition(value) {
-  return ['top-left', 'top-right', 'bottom-left', 'bottom-right'].includes(value)
+  return ['top-left', 'top-right', 'top-center', 'bottom-left', 'bottom-right', 'bottom-center'].includes(value)
     ? value
     : DEFAULT_CONTROLS_POSITION;
 }
@@ -11081,14 +11081,20 @@ export class GeoCanvas {
     this.controlsElement.style.right = '';
     this.controlsElement.style.bottom = '';
     this.controlsElement.style.left = '';
+    this.controlsElement.style.transform = '';
 
     const position = normalizeControlsPosition(this.options.controlsPosition);
+    const isCenteredRow = position === 'top-center' || position === 'bottom-center';
+    this.controlsElement.style.flexDirection = isCenteredRow ? 'row' : 'column';
     if (position.includes('top')) {
       this.controlsElement.style.top = '12px';
     } else {
       this.controlsElement.style.bottom = '12px';
     }
-    if (position.includes('right')) {
+    if (position.includes('center')) {
+      this.controlsElement.style.left = '50%';
+      this.controlsElement.style.transform = 'translateX(-50%)';
+    } else if (position.includes('right')) {
       this.controlsElement.style.right = '12px';
     } else {
       this.controlsElement.style.left = '12px';
